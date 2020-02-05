@@ -4,7 +4,7 @@ import unittest
 from helpr.http_exceptions import *
 
 
-class HttpException(unittest.TestCase):
+class HttpExceptionTest(unittest.TestCase):
 
   def test_badrequest_init(self):
     # Assert code if integer
@@ -36,7 +36,7 @@ class HttpException(unittest.TestCase):
     # Assert endpoint if string
     self.assertRaises(ValueError, MethodNotAllowed, 0, '', 0)
 
-  def test_bad_reqeust_exception(self):
+  def test_bad_request_exception(self):
     with self.assertRaises(Exception) as context:
       HTTPExceptions.raise_exception( HTTPExceptions.BAD_REQUEST,
         '/testendpoint/badrequest'
