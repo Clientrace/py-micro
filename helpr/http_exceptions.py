@@ -9,7 +9,7 @@ class BadRequest(Error):
   """
   Status Code 400
   """
-  def __init__(self, code, msg, endpoint):
+  def __init__(self, code, msg, endpoint, fieldError):
     if type(code) != int:
       raise ValueError('Parameter code: Type Error (It should be integer)')
 
@@ -19,9 +19,13 @@ class BadRequest(Error):
     if type(endpoint) != str:
       raise ValueError('Parameter msg: Type Error (It should be string)')
 
+    if type(fieldError) != str:
+      raise ValueError('Parameter msg: Type Error (It should be string)')
+
     self.code = code
     self.msg = msg
     self.endpoint = endpoint
+    self.fieldError = fieldError
 
 class InternalServerError(Error):
   """
@@ -67,11 +71,12 @@ class HTTPExceptions:
   BAD_REQUEST = 400
 
   @staticmethod
-  def raise_exception(statusCode, endpoint):
+  def raise_exception(statusCode, endpoint, field=None):
     """
     Raise HTTP Exception
     :param statusCode: HTTP Status Code
     :param endpoint: API Endpoint/Resource
+    :param field: Missing Field for Bad Request
     :type statusCode: integer
     :type endpoint: string
     """
@@ -80,7 +85,9 @@ class HTTPExceptions:
       raise BadRequest(
         HTTPExceptions.BAD_REQUEST,
         'Bad Request',
-        endpoint)
+        endpoint,
+        field
+      )
 
     if statusCode == HTTPExceptions.INTERNAL_SERVER_ERROR:
       raise InternalServerError(

@@ -42,11 +42,18 @@ class ServiceHandler():
         if param not in self.qparams.keys():
           HTTPExceptions.raise_exception(
             HTTPExceptions.BAD_REQUEST,
+            self.endpoint,
+            "Missing Param: " + param
+          )
+
+    if self.method.lower() == 'post':
+      for param in self.rparams:
+        if param not in self.qparams.keys():
+          HTTPExceptions.raise_exception(
+            HTTPExceptions.BAD_REQUEST,
             self.endpoint
           )
 
-    # if method.lower() == 'post':
-    #   pass
 
 
 
