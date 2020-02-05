@@ -1,0 +1,40 @@
+
+service: py-microservice-template
+
+provider:
+  name: aws
+  runtime: python3.7
+  stage: ${opt:stage, 'dev'}
+  region: ap-southeast-1
+
+functions:
+  create_user:
+    handler: handlers/create_user.handler
+    events:
+      - http:
+          path: user/create
+          method: post
+          cors: true
+  view_user:
+    handler: handlers/view_user.handler
+    events:
+      - http:
+          path: user/view/{id}
+          method: get
+          cors: true
+  update_user:
+    handler: handlers/update_user.handler
+    events:
+      - http:
+          path: user/update/{id}
+          method: put
+          cors: true
+  delete_user:
+    handler: handlers/delete_user.handler
+    events:
+      - http:
+          path: user/delete/{id}
+          method: delete
+          cors: true
+
+      
