@@ -41,6 +41,24 @@ class InternalServerError(Error):
     self.msg = msg
     self.endpoint = endpoint
 
+class MethodNotAllowed(Error):
+  """
+  Status Code 500
+  """
+  def __init__(self, code, msg, endpoint):
+    if type(code) != int:
+      raise ValueError('Parameter code: Type Error (It should be integer)')
+
+    if type(msg) != str:
+      raise ValueError('Parameter msg: Type Error (It should be string)')
+
+    if type(endpoint) != str:
+      raise ValueError('Parameter msg: Type Error (It should be string)')
+
+    self.code = code
+    self.msg = msg
+    self.endpoint = endpoint
+
 
 class HTTPExceptions:
 
@@ -61,16 +79,25 @@ class HTTPExceptions:
 
     if statusCode == HTTPExceptions.BAD_REQUEST:
       raise BadRequest(
-        statusCode,
+        HTTPExceptions.BAD_REQUEST,
         'Bad Request',
         endpoint)
 
     if statusCode == HTTPExceptions.INTERNAL_SERVER_ERROR:
       raise InternalServerError(
-        statusCode,
+        HTTPExceptions.INTERNAL_SERVER_ERROR,
         'Internal Server Error',
         endpoint
       )
+
+    if statusCode == HTTPExceptions.METHOD_NOT_ALLOWED:
+      raise MethodNotAllowed(
+        HTTPExceptions.METHOD_NOT_ALLOWED,
+        'Method not Allowed',
+        endpoint
+      )
+
+
 
 
 
