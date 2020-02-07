@@ -21,38 +21,82 @@ class ServiceHandlerTest(unittest.TestCase):
     self.assertRaises(
       ValueError,
       ServiceHandler,
-      '', '', None, None 
+      '', '', 0, None 
     )
     self.assertRaises(
       ValueError,
       ServiceHandler,
-      '', '', {}, None 
+      '', '', [], 0
     )
 
-  def test_qparam_validator(self):
+  def test_param_validator_for_get_request(self):
     serviceHandler = ServiceHandler(
-      '/testendpoint/badrequest',
-      'get',
-      {
-        'param1' : 'value1'
-      },
-      ['param1', 'param2']
+      '/testendpoint',
+      'GET',
+      ['qparam1', 'qparam2', 'qparam3'],
+      None
     )
 
-    with self.assertRaises(BadRequest) as context:
-      serviceHandler._validate_request_params()
+    testQueryParam = {
+      'qparam1' : 'testvalue1',
+      'qparam2' : 'testvalue2',
+      'qparam3' : 'testvalue3'
+    }
+    
+    self.assertEqual(
+      serviceHandler._validate_request_params(
+        testQueryParam,
+      ), 0 
+    )
 
-    self.assertEqual(context.exception.code, HTTPExceptions.BAD_REQUEST)
-    self.assertEqual(context.exception.msg, 'Bad Request')
-    self.assertEqual(context.exception.endpoint, '/testendpoint/badrequest')
+  def test_param_validator_for_get(self):
+    serviceHandler = ServiceHandler(
+      '/testendpoint',
+      'GET',
+      ['param1', 'param2', 'param3'],
+      None
+    )
+
+    testQparams1 = {
+      'param1' : 'value1',
+      'param2' : 'value2',
+      'param3' : 'value3'
+    }
+
+    testQparams2  = {
+      'param1' : 'value1'
+    }
+
+    # Valid request
+    self.assertEqual(
+      serviceHandler._validate_request_params(
+        testQparams1,
+      ), 0 
+    )
+
+    # Raise BadRequest Exception for Empty Param
+    self.assertRaises(
+      BadRequest,
+      serviceHandler._validate_request_params,
+      None,
+      None
+    )
+
+    # Raise BadRequest Exception for Empty Param
+    self.assertRaises(
+      BadRequest,
+      serviceHandler._validate_request_params,
+      testQparams2,
+      None
+    )
+
+    
 
 
 
 
-
-
-
-
+  
+    
 
 
 
