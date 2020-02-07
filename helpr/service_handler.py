@@ -1,6 +1,12 @@
 
+import sys
 import logging
 from helpr.http_exceptions import *
+
+logger = logging.getLogger()
+logger.level = logging.DEBUG
+stream_handler = logging.StreamHandler(sys.stdout)
+logger.addHandler(stream_handler)
 
 
 class ServiceHandler():
@@ -12,6 +18,10 @@ class ServiceHandler():
     :param method: http method
     :param rqparams: required query params
     :param rbparams: required body params
+    :type endpoint: string
+    :type method: string
+    :type rqparams: list
+    :type rbparams: list
     """
 
     if type(endpoint) != str:
@@ -33,6 +43,10 @@ class ServiceHandler():
 
   def _validate_request_params(self, qparams, reqbody=None):
     """
+    :param qparams: query param
+    :param reqbody: request body
+    :type qparams: dict
+    :type reqbody: dict
     """
     if type(qparams) != dict and qparams != None:
       raise ValueError('Param qparams: Type Error (It shoud be dicitonary)')
@@ -55,14 +69,14 @@ class ServiceHandler():
             self.endpoint,
             param
           )
-            
+
     if self.method == 'post':
       if self.rbparams:
         if reqbody == None:
           HTTPExceptions.raise_exception(
             HTTPExceptions.BAD_REQUEST,
             self.endpoint,
-            param
+            '( Empty Param )'
           )
 
         for param in self.rbparams:
@@ -73,6 +87,9 @@ class ServiceHandler():
               param
             )
     return 0
+
+
+
 
 
 
