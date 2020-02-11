@@ -10,34 +10,38 @@ class ServiceHandlerTest(unittest.TestCase):
     self.assertRaises(
       ValueError,
       ServiceHandler,
-      0, None, None, None
+      0, None, None, None, None
     )
     self.assertRaises(
       ValueError,
       ServiceHandler,
-      '', 0, None, None 
+      '', 0, None, None, None
     )
     self.assertRaises(
       ValueError,
       ServiceHandler,
-      '', '', 0, None 
+      '', '', 0, None, None
     )
     self.assertRaises(
       ValueError,
       ServiceHandler,
-      '', '', [], 0
+      '', '', {}, 0,None
+    )
+    self.assertRaises(
+      ValueError,
+      ServiceHandler,
+      '', '', {}, {}, 0
     )
 
   def test_param_validator_for_get_request(self):
     serviceHandler = ServiceHandler(
-      '/testendpoint',
-      'GET',
-      {
+      endpoint = '/testendpoint',
+      method = 'GET',
+      rqparams = {
         'qparam1' : ServiceHandler.STRING,
         'qparam2' : ServiceHandler.STRING,
         'qparam3' : ServiceHandler.STRING
-      },
-      None
+      }
     )
 
     testQueryParam = {
@@ -54,10 +58,8 @@ class ServiceHandlerTest(unittest.TestCase):
 
   def test_validate_req_types(self):
     serviceHandler = ServiceHandler(
-      '/testendpoint',
-      'GET',
-      None,
-      None
+      endpoint='/testendpoint',
+      method='GET'
     )
 
     self.assertRaises(
@@ -77,14 +79,13 @@ class ServiceHandlerTest(unittest.TestCase):
 
   def test_param_validator_for_get(self):
     serviceHandler = ServiceHandler(
-      '/testendpoint',
-      'GET',
-      {
+      endpoint = '/testendpoint',
+      method = 'GET',
+      rqparams={
         'param1' : ServiceHandler.STRING,
         'param2' : ServiceHandler.STRING,
         'param3' : ServiceHandler.STRING
-      },
-      None
+      }
     )
 
     testQparams1 = {
@@ -122,14 +123,14 @@ class ServiceHandlerTest(unittest.TestCase):
 
   def test_param_validator_for_post(self):
     serviceHandler = ServiceHandler(
-      '/testendpoint',
-      'post',
-      {
+      endpoint='/testendpoint',
+      method='post',
+      rqparams={
         'param1' : ServiceHandler.STRING,
         'param2' : ServiceHandler.STRING,
         'param3' : ServiceHandler.STRING
       },
-      {
+      rbparams={
         'field1' : ServiceHandler.STRING,
         'field2' : ServiceHandler.STRING,
         'field3' : ServiceHandler.STRING
@@ -192,10 +193,9 @@ class ServiceHandlerTest(unittest.TestCase):
 
     # No QParam required
     serviceHandler = ServiceHandler(
-      '/testendpoint',
-      'post',
-      None,
-      {
+      endpoint='/testendpoint',
+      method='post',
+      rbparams={
         'field1' : ServiceHandler.STRING,
         'field2' : ServiceHandler.STRING,
         'field3' : ServiceHandler.STRING
@@ -230,17 +230,20 @@ class ServiceHandlerTest(unittest.TestCase):
 
   def test_type_check(self):
     serviceHandler = ServiceHandler(
-      '/testendpoint',
-      'post',
-      {
+      endpoint='/testendpoint',
+      method='post',
+      rqparams={
         'param1' : ServiceHandler.STRING,
         'param2' : ServiceHandler.STRING,
         'param3' : ServiceHandler.STRING
       },
-      {
+      rbparams={
         'field1' : ServiceHandler.STRING,
         'field2' : ServiceHandler.STRING,
-        'field3' : ServiceHandler.STRING
+        'field3' : {
+          'f1' : ServiceHandler.INTEGER,
+          'f2' : ServiceHandler.INTEGER
+        }
       }
     )
 
@@ -256,7 +259,10 @@ class ServiceHandlerTest(unittest.TestCase):
       {
         'field1' : '',
         'field2' : '',
-        'field3' : 0
+        'field3' : {
+          'f1' : 0,
+          'f2': ''
+        }
       }
     )
    

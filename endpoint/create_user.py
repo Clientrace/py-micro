@@ -25,7 +25,7 @@ def handler(event, context):
 
   # DynamoDB Repo 
   db = dynamodb_repo.Dynamodb(
-    'members',
+    'users_table',
     'ap-southeast-1'
   )
 
@@ -38,7 +38,3 @@ def handler(event, context):
 
   return  service.execute()
   
-
-
-
-

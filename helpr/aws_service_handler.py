@@ -12,10 +12,12 @@ class AWSServiceHandler:
   TYPE_MAP = [int, float, str, bool, list] 
 
   def __init__(self, event, rqparams, rbparams):
+    print(event)
     self.path = event['requestContext']['resourcePath']
     self.httpMethod = event['httpMethod']
     self.pathParams = event['pathParameters']
-    self.evenBody = event['body']
+    self.queryStringParams = event['queryStringParameters`']
+    self.eventBody = event['body']
     self.service_handler = ServiceHandler(
       self.path,
       self.httpMethod,
@@ -24,9 +26,14 @@ class AWSServiceHandler:
     )
 
   def validate_request_params(self):
+    print(self.pathParams)
+    print(self.eventBody)
+    print(type(self.pathParams))
+    print(type(self.eventBody))
+
     self.service_handler._validate_request_params(
       self.pathParams,
-      self.evenBody
+      self.eventBody
     )
 
 
@@ -35,7 +42,7 @@ class AWSServiceHandler:
 
 
   def get_request_body(self):
-    return self.evenBody
+    return self.eventBody
 
 
 

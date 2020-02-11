@@ -6,6 +6,8 @@ provider:
   runtime: python3.7
   stage: ${opt:stage, 'dev'}
   region: ap-southeast-1
+  exclude:
+    - env/**
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -17,7 +19,7 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - "Fn::GetAtt": [users_table, Arn]
+        - "Fn::GetAtt": [usersTable, Arn]
 
 functions:
   create_user:
@@ -49,12 +51,9 @@ functions:
           method: delete
           cors: true
 
-      
-
-
 resources:
   Resources:
-    users_table:
+    usersTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: users_table 
@@ -69,3 +68,4 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
+
