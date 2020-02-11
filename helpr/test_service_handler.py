@@ -32,7 +32,11 @@ class ServiceHandlerTest(unittest.TestCase):
     serviceHandler = ServiceHandler(
       '/testendpoint',
       'GET',
-      ['qparam1', 'qparam2', 'qparam3'],
+      {
+        'qparam1' : ServiceHandler.STRING,
+        'qparam2' : ServiceHandler.STRING,
+        'qparam3' : ServiceHandler.STRING
+      },
       None
     )
 
@@ -75,7 +79,11 @@ class ServiceHandlerTest(unittest.TestCase):
     serviceHandler = ServiceHandler(
       '/testendpoint',
       'GET',
-      ['param1', 'param2', 'param3'],
+      {
+        'param1' : ServiceHandler.STRING,
+        'param2' : ServiceHandler.STRING,
+        'param3' : ServiceHandler.STRING
+      },
       None
     )
 
@@ -116,8 +124,16 @@ class ServiceHandlerTest(unittest.TestCase):
     serviceHandler = ServiceHandler(
       '/testendpoint',
       'post',
-      ['param1', 'param2', 'param3'],
-      ['field1', 'field2', 'field3']
+      {
+        'param1' : ServiceHandler.STRING,
+        'param2' : ServiceHandler.STRING,
+        'param3' : ServiceHandler.STRING
+      },
+      {
+        'field1' : ServiceHandler.STRING,
+        'field2' : ServiceHandler.STRING,
+        'field3' : ServiceHandler.STRING
+      }
     )
 
     testQParams = {
@@ -179,7 +195,11 @@ class ServiceHandlerTest(unittest.TestCase):
       '/testendpoint',
       'post',
       None,
-      ['field1', 'field2', 'field3']
+      {
+        'field1' : ServiceHandler.STRING,
+        'field2' : ServiceHandler.STRING,
+        'field3' : ServiceHandler.STRING
+      }
     )
 
     # Valid Post Request
@@ -205,6 +225,42 @@ class ServiceHandlerTest(unittest.TestCase):
       None,
       testReqBody2
     )
+
+
+
+  def test_type_check(self):
+    serviceHandler = ServiceHandler(
+      '/testendpoint',
+      'post',
+      {
+        'param1' : ServiceHandler.STRING,
+        'param2' : ServiceHandler.STRING,
+        'param3' : ServiceHandler.STRING
+      },
+      {
+        'field1' : ServiceHandler.STRING,
+        'field2' : ServiceHandler.STRING,
+        'field3' : ServiceHandler.STRING
+      }
+    )
+
+    # Raise BadRequest Exception for invalid type
+    self.assertRaises(
+      BadRequest,
+      serviceHandler._validate_request_params,
+      {
+        'param1' : '',
+        'param2' : '',
+        'param3' : ''
+      },
+      {
+        'field1' : '',
+        'field2' : '',
+        'field3' : 0
+      }
+    )
+   
+
 
 
 
