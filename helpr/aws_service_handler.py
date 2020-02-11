@@ -1,5 +1,7 @@
 
+import json
 from helpr.service_handler import ServiceHandler
+from helpr.http_exceptions import *
 
 
 class AWSServiceHandler:
@@ -11,39 +13,51 @@ class AWSServiceHandler:
   LIST = 4
   TYPE_MAP = [int, float, str, bool, list] 
 
-  def __init__(self, event, rqparams, rbparams):
-    print(event)
+  def __init__(self,
+     event,
+     Repo,
+     Service,
+     ReqQueryparams=None,
+     ReqBody=None,
+     ReqPathParams=None):
+
     self.path = event['requestContext']['resourcePath']
     self.httpMethod = event['httpMethod']
     self.pathParams = event['pathParameters']
-    self.queryStringParams = event['queryStringParameters`']
-    self.eventBody = event['body']
+    self.queryStringParams = event['queryStringParameters']
+    self.eventBody = json.loads(event['body'])
+
     self.service_handler = ServiceHandler(
       self.path,
       self.httpMethod,
-      rqparams,
-      rbparams
+      ReqQueryparams,
+      ReqBody,
+      ReqPathParams
     )
 
-  def validate_request_params(self):
-    print(self.pathParams)
-    print(self.eventBody)
-    print(type(self.pathParams))
-    print(type(self.eventBody))
+    self.repo = Repo
+    self.service = Service
 
+  def execute(self):
+    # Raise Error Upon Validation
     self.service_handler._validate_request_params(
-      self.pathParams,
-      self.eventBody
+      self.queryStringParams,
+      self.eventBody,
+      self.pathParams
     )
 
+    # Run Service
+    try:
+      resp = self.service.execute()
+    except Exception as e:
+      print(str(e))
+      HTTPExceptions.raise_exception(
+        HTTPExceptions.INTERNAL_SERVER_ERROR,
+        self.path,
+        'Server Error'
+      )
 
-  def get_request_params(self):
-    return self.pathParams
-
-
-  def get_request_body(self):
-    return self.eventBody
-
+    return resp
 
 
 

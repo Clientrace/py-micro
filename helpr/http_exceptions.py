@@ -39,7 +39,7 @@ class InternalServerError(Error):
       raise ValueError('Parameter msg: Type Error (It should be string)')
 
     if type(endpoint) != str:
-      raise ValueError('Parameter msg: Type Error (It should be string)')
+      raise ValueError('Parameter endpint: Type Error (It should be string)')
 
     self.code = code
     self.msg = msg

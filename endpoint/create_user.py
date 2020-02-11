@@ -6,11 +6,16 @@ from ms.services.create_user import CreateUser
 from ms import dynamodb_repo
 
 def handler(event, context):
+
   # Initialize Request Handler for Request Validation
   svh = AWSServiceHandler(
     event,
-    None,
-    {
+    Service = CreateUser,
+    Repo=dynamodb_repo.Dynamodb(
+      'users_table',
+      'ap-southeast-1'
+    ),
+    ReqQueryparams={
       'name' : AWSServiceHandler.STRING,
       'address' : AWSServiceHandler.STRING,
       'age' : AWSServiceHandler.INTEGER
@@ -18,23 +23,12 @@ def handler(event, context):
   )
 
   try:
-      svh.validate_request_params()
+    return svh.execute()
   except Exception as e:
-    print(e)
-    return 
+    print(e.args)
+    return {
+      'statusCode' : 500,
+      'body' : str(e)
+    }
 
-  # DynamoDB Repo 
-  db = dynamodb_repo.Dynamodb(
-    'users_table',
-    'ap-southeast-1'
-  )
 
-  # Create Database Repo
-  service = CreateUser(
-    db,
-    svh.get_request_params(),
-    svh.get_request_body()
-  )
-
-  return  service.execute()
-  

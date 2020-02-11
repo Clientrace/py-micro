@@ -5,8 +5,6 @@ from helpr.http_exceptions import *
 
 
 class ServiceHandler():
-
-
   INTEGER = 0
   FLOAT = 1
   STRING = 2
