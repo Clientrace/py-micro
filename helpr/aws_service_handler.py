@@ -3,6 +3,14 @@ from helpr.service_handler import ServiceHandler
 
 
 class AWSServiceHandler:
+
+  INTEGER = 0
+  FLOAT = 1
+  STRING = 2
+  BOOLEAN = 3
+  LIST = 4
+  TYPE_MAP = [int, float, str, bool, list] 
+
   def __init__(self, event, rqparams, rbparams):
     self.path = event['requestContext']['resourcePath']
     self.httpMethod = event['httpMethod']
@@ -22,6 +30,12 @@ class AWSServiceHandler:
     )
 
 
+  def get_request_params(self):
+    return self.pathParams
+
+
+  def get_request_body(self):
+    return self.evenBody
 
 
 

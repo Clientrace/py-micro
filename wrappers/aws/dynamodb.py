@@ -4,8 +4,6 @@ import boto3
 import logging
 
 
-
-
 class Dynamodb:
 
   def __init__(self, tableName, region, awsCred=None):
@@ -68,9 +66,8 @@ class Dynamodb:
     :returns: Dynamodb Response object
     :rtype: json (dictionary)
     """
-
-    resp = self.DYNAMODB_c.put_item(
-      TableName = self.tableName,
+    table = self.DYNAMODB_r.Table(self.tableName)
+    resp = table.put_item(
       Item = item,
       ReturnConsumedCapacity = 'TOTAL'
     )

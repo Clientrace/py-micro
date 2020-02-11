@@ -6,31 +6,43 @@ provider:
   runtime: python3.7
   stage: ${opt:stage, 'dev'}
   region: ap-southeast-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - "Fn::GetAtt": [users_table, Arn]
 
 functions:
   create_user:
-    handler: handlers/create_user.handler
+    handler: endpoint/create_user.handler
     events:
       - http:
           path: user/create
           method: post
           cors: true
   view_user:
-    handler: handlers/view_user.handler
+    handler: endpoint/view_user.handler
     events:
       - http:
           path: user/view/{id}
           method: get
           cors: true
   update_user:
-    handler: handlers/update_user.handler
+    handler: endpoint/update_user.handler
     events:
       - http:
           path: user/update/{id}
           method: put
           cors: true
   delete_user:
-    handler: handlers/delete_user.handler
+    handler: endpoint/delete_user.handler
     events:
       - http:
           path: user/delete/{id}
@@ -38,3 +50,22 @@ functions:
           cors: true
 
       
+
+
+resources:
+  Resources:
+    users_table:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: users_table 
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+    
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+    
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
