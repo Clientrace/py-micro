@@ -16,14 +16,17 @@ class APIIntegrationTest(unittest.TestCase):
     }
 
     resp = requests.post(
-      HOST_URL + '/dev/user/create?test=123',
+      HOST_URL + '/dev/user/create',
       headers = {'Content-Type' : 'application/json'},
       data = json.dumps(item)
     )
 
+    userId = json.loads(resp.content)['id']
+
     self.assertEqual(resp.status_code, 200)
 
+
+
+
+
   
-
-
-

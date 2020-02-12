@@ -52,6 +52,8 @@ class ServiceHandler():
 
   @staticmethod
   def __recursive_attrb_check(endpoint, params, required_params):
+    print(params)
+    print(required_params)
     for rp in required_params.keys():
       if rp not in params:
         HTTPExceptions.raise_exception(
@@ -75,10 +77,6 @@ class ServiceHandler():
             )
         else:
           if type(params[rp]) != ServiceHandler.TYPE_MAP[required_params[rp]]:
-            print('WRONT TYPE')
-            print(params[rp])
-            print(required_params[rp])
-            print('=============================')
             HTTPExceptions.raise_exception(
               HTTPExceptions.BAD_REQUEST,
               endpoint,
@@ -122,14 +120,13 @@ class ServiceHandler():
       ServiceHandler.__recursive_attrb_check(self.endpoint, qparams, self.rqparams)
 
 
-    if self.method == 'post':
-      if self.rbparams:
-        if reqbody == None:
-          HTTPExceptions.raise_exception(
-            HTTPExceptions.BAD_REQUEST,
-            self.endpoint,
-            '( Empty Param )'
-          )
+    if self.rbparams:
+      if reqbody == None:
+        HTTPExceptions.raise_exception(
+          HTTPExceptions.BAD_REQUEST,
+          self.endpoint,
+          '( Empty Param )'
+        )
       ServiceHandler.__recursive_attrb_check(self.endpoint, reqbody, self.rbparams)
 
     return 0

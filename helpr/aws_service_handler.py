@@ -46,7 +46,7 @@ class AWSServiceHandler:
     # Parse aws event and get the httpmethod, pathParams, querystring params,
     # and query request body for post
     self.path = event['requestContext']['resourcePath']
-    self.httpMethod = event['httpMethod']
+    self.httpMethod = event['httpMethod'].lower()
     self.pathParams = event['pathParameters']
     self.queryStringParams = event['queryStringParameters']
     self.eventBody = json.loads(event['body'])
