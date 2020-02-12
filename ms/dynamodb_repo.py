@@ -19,6 +19,16 @@ class DynamoDBRepo:
     self.dynamodb.put_item(user)
     return {'id' : user['id']}
 
+  def get_user(self, id):
+    """
+    Get user
+    :param id: user id
+    :type id: string
+    """
+
+    user = self.dynamodb.get_item({'id' : id})
+    return user
+
   def delete_user(self, id):
     """
     Delete user by ID

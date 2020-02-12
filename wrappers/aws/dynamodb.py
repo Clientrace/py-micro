@@ -122,12 +122,11 @@ class Dynamodb:
     :returns: Dynamodb Response object
     :rtype: json (dicionary)
     """
-
-    resp = self.DYNAMODB_c.get_item(
-      TableName = self.tableName,
-      Key = key
+    table = self.DYNAMODB_r.Table(self.tableName)
+    resp = table.get_item(
+      Key = key,
+      ReturnConsumedCapacity = 'TOTAL'
     )
-
     return resp
 
   def delete_item(self, key):
