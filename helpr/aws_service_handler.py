@@ -71,6 +71,7 @@ class AWSServiceHandler:
   def execute(self):
     """
     Execute Service Request
+    :returns: request status and body
     :rtype: dictionary
     """
     # Raise Error Upon Validation
@@ -91,6 +92,7 @@ class AWSServiceHandler:
       )
 
     return resp
+
 
 
 

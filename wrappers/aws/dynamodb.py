@@ -130,6 +130,21 @@ class Dynamodb:
 
     return resp
 
+  def delete_item(self, key):
+    """
+    Delete dynamodb item
+    :param key: table key
+    :type key: dictionary
+    :returns:
+    """
+
+    table = self.DYNAMODB_r.Table(self.tableName)
+    resp = table.delete_item(
+      Key = key,
+      ReturnConsumedCapacity = 'TOTAL'
+    )
+    return resp
+
   def batch_delete(self, items):
     """
     Dynamodb batch delete items
