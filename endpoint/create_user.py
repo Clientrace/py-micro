@@ -24,11 +24,11 @@ def handler(event, context):
   try:
     return svh.execute()
   except Exception as e:
-    print(e.args)
     return {
-      'statusCode' : 500,
-      'body' : str(e)
+      'statusCode' : e.args[0],
+      'body' : str(e.args)
     }
+
 
 
 

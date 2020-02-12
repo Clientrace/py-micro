@@ -17,9 +17,16 @@ class AWSServiceHandler:
      event,
      Repo,
      Service,
-     ReqQueryparams=None,
+     ReqQueryParams=None,
      ReqBody=None,
      ReqPathParams=None):
+    """
+    Initialize Service Handler for AWS
+    :param event: AWS Event
+    :param Repo: repository
+    :param Service: service use case
+    :param ReqQueryParams:
+    """
 
     self.path = event['requestContext']['resourcePath']
     self.httpMethod = event['httpMethod']
@@ -30,17 +37,10 @@ class AWSServiceHandler:
     self.service_handler = ServiceHandler(
       endpoint = self.path,
       method = self.httpMethod,
-      rqparams = ReqQueryparams,
+      rqparams = ReqQueryParams,
       rbparams = ReqBody,
       rpparams = ReqPathParams
     )
-
-
-    print('===================')
-    print(self.queryStringParams)
-    print(self.eventBody)
-    print(self.pathParams)
-    print('===================')
 
     self.service = Service(
       Repo,
@@ -61,7 +61,6 @@ class AWSServiceHandler:
     try:
       resp = self.service.execute()
     except Exception as e:
-      print(str(e))
       HTTPExceptions.raise_exception(
         HTTPExceptions.INTERNAL_SERVER_ERROR,
         self.path,
@@ -69,6 +68,7 @@ class AWSServiceHandler:
       )
 
     return resp
+
 
 
 

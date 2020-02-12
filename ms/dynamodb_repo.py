@@ -10,7 +10,7 @@ class DynamoDBRepo:
 
   def create_user(self, item):
     item['id'] = uuid.uuid4().hex
-    resp = self.dynamodb.put_item(item)
+    self.dynamodb.put_item(item)
     return {'id' : item['id']}
 
 
