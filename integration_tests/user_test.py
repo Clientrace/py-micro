@@ -25,6 +25,15 @@ class APIIntegrationTest(unittest.TestCase):
 
     self.assertEqual(resp.status_code, 200)
 
+    resp = requests.delete(
+      HOST_URL + '/dev/user/delete/' + userId,
+      headers = {'Content-Type' : 'application/json'}
+    )
+
+
+
+    self.assertEqual(resp.status_code, 200)
+
 
 
 

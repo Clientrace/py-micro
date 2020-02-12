@@ -52,8 +52,6 @@ class ServiceHandler():
 
   @staticmethod
   def __recursive_attrb_check(endpoint, params, required_params):
-    print(params)
-    print(required_params)
     for rp in required_params.keys():
       if rp not in params:
         HTTPExceptions.raise_exception(

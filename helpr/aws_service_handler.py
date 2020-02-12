@@ -49,7 +49,8 @@ class AWSServiceHandler:
     self.httpMethod = event['httpMethod'].lower()
     self.pathParams = event['pathParameters']
     self.queryStringParams = event['queryStringParameters']
-    self.eventBody = json.loads(event['body'])
+    self.eventBody = AWSServiceHandler.parse_json(event['body'])
+
 
     # Initialize Service Handler for the request
     self.service_handler = ServiceHandler(
@@ -67,6 +68,15 @@ class AWSServiceHandler:
       self.eventBody,
       self.pathParams
     )
+
+  @classmethod
+  def parse_json(cls, jsonstring):
+    ret = None
+    try:
+      return json.loads(jsonstring)
+    except Exception as e:
+      ret = {}
+    return ret
 
   def execute(self):
     """
