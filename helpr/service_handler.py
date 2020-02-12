@@ -34,7 +34,7 @@ class ServiceHandler():
       raise ValueError('Parameter method: Type Error (It should be string)')
 
     if type(rpparams) != dict and rpparams != None:
-      raise ValueError('Parameter rqparams: Type Error (It should be dictionary)')
+      raise ValueError('Parameter rpparams: Type Error (It should be dictionary)')
     
     if type(rqparams) != dict and rqparams != None:
       raise ValueError('Parameter rqparams: Type Error (It should be dictionary)')
@@ -75,6 +75,10 @@ class ServiceHandler():
             )
         else:
           if type(params[rp]) != ServiceHandler.TYPE_MAP[required_params[rp]]:
+            print('WRONT TYPE')
+            print(params[rp])
+            print(required_params[rp])
+            print('=============================')
             HTTPExceptions.raise_exception(
               HTTPExceptions.BAD_REQUEST,
               endpoint,
@@ -106,7 +110,7 @@ class ServiceHandler():
           self.endpoint,
           '( Empty Param )'
         )
-      ServiceHandler.__recursive_attrb_check(self.endpoint, qparams, self.rpparams)
+      ServiceHandler.__recursive_attrb_check(self.endpoint, path_params, self.rpparams)
 
     if self.rqparams:
       if qparams == None:

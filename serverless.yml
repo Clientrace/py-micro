@@ -7,7 +7,7 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ap-southeast-1
   exclude:
-    - env/**
+    - 'env/**'
   iamRoleStatements:
     - Effect: Allow
       Action:

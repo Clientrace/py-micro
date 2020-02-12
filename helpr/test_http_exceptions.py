@@ -87,7 +87,3 @@ class HttpExceptionTest(unittest.TestCase):
 
 
 
-
-
-
-

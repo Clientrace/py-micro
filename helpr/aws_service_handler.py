@@ -28,22 +28,33 @@ class AWSServiceHandler:
     self.eventBody = json.loads(event['body'])
 
     self.service_handler = ServiceHandler(
-      self.path,
-      self.httpMethod,
-      ReqQueryparams,
-      ReqBody,
-      ReqPathParams
+      endpoint = self.path,
+      method = self.httpMethod,
+      rqparams = ReqQueryparams,
+      rbparams = ReqBody,
+      rpparams = ReqPathParams
     )
 
-    self.repo = Repo
-    self.service = Service
+
+    print('===================')
+    print(self.queryStringParams)
+    print(self.eventBody)
+    print(self.pathParams)
+    print('===================')
+
+    self.service = Service(
+      Repo,
+      self.queryStringParams,
+      self.eventBody,
+      self.pathParams
+    )
 
   def execute(self):
     # Raise Error Upon Validation
     self.service_handler._validate_request_params(
-      self.queryStringParams,
-      self.eventBody,
-      self.pathParams
+      qparams = self.queryStringParams,
+      reqbody = self.eventBody,
+      path_params = self.pathParams
     )
 
     # Run Service
@@ -58,7 +69,6 @@ class AWSServiceHandler:
       )
 
     return resp
-
 
 
 
