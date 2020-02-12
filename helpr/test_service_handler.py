@@ -1,7 +1,7 @@
 import logging
 import unittest
-from helpr.http_exceptions import *
 from helpr.service_handler import ServiceHandler
+from helpr.http_exceptions import HTTPExceptions, BadRequest, InternalServerError, MethodNotAllowed
 
 
 class ServiceHandlerTest(unittest.TestCase):

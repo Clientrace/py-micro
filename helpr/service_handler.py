@@ -1,7 +1,7 @@
 
 import sys
 import logging
-from helpr.http_exceptions import *
+from helpr.http_exceptions import HTTPExceptions
 
 
 class ServiceHandler():

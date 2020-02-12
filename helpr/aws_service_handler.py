@@ -1,7 +1,7 @@
 
 import json
 from helpr.service_handler import ServiceHandler
-from helpr.http_exceptions import *
+from helpr.http_exceptions import HTTPExceptions
 
 
 class AWSServiceHandler:
@@ -74,7 +74,7 @@ class AWSServiceHandler:
     ret = None
     try:
       return json.loads(jsonstring)
-    except Exception as e:
+    except Exception:
       ret = {}
     return ret
 
@@ -94,7 +94,7 @@ class AWSServiceHandler:
     # Execute the service
     try:
       resp = self.service.execute()
-    except Exception as e:
+    except Exception:
       HTTPExceptions.raise_exception(
         HTTPExceptions.INTERNAL_SERVER_ERROR,
         self.path,

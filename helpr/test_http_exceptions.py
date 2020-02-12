@@ -2,7 +2,7 @@
 import sys
 import logging
 import unittest
-from helpr.http_exceptions import *
+from helpr.http_exceptions import HTTPExceptions, BadRequest, InternalServerError, MethodNotAllowed
 
 logger = logging.getLogger()
 logger.level = logging.DEBUG
