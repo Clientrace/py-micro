@@ -46,6 +46,9 @@ class AWSServiceHandler:
     :type ReqPathParams: dictionary
     """
 
+    # Set Logger
+    logging.getLogger().setLevel(logging.INFO)
+
     # Parse aws event and get the httpmethod, pathParams, querystring params,
     # and query request body for post
     self.path = event['requestContext']['resourcePath']
@@ -125,8 +128,5 @@ class AWSServiceHandler:
     logging.info(' ' + self.path + ' ' + self.httpMethod + ' - ' + str(resp['statusCode']))
 
     return resp
-
-
-
 
 
