@@ -2,7 +2,7 @@
 import json
 
 
-class ViewUser:
+class UpdateUser:
 
   def __init__(self, repo, requestParams, requestBody, pathParams):
     self.repo = repo
@@ -11,12 +11,14 @@ class ViewUser:
     self.pathParams = pathParams
 
   def execute(self):
-    resp = self.repo.get_user(self.pathParams['id'])
+    resp = self.repo.update_user(
+      self.pathParams['id'],
+      self.requestBody
+    )
+
     return {
       'statusCode' : 200,
       'body' : json.dumps(resp)
     }
-
-
 
 

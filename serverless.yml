@@ -1,13 +1,20 @@
 
 service: py-microservice-template
 
+package:
+  exclude:
+    - 'env/**'
+    - '__pycache__/**'
+    - '.pytest_cache/**'
+    - '.serverless/**'
+    - '.coverage'
+
 provider:
   name: aws
   runtime: python3.7
   stage: ${opt:stage, 'dev'}
   region: ap-southeast-1
-  exclude:
-    - 'env/**'
+
   iamRoleStatements:
     - Effect: Allow
       Action:

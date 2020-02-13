@@ -26,7 +26,10 @@ class DynamoDBRepo:
     :type id: string
     """
 
-    user = self.dynamodb.get_item({'id' : id})
+    resp = self.dynamodb.get_item({'id' : id})
+    user = resp['Item']
+    print(user)
+    user['age'] = int(user['age'])
     return user
 
   def delete_user(self, id):
@@ -40,5 +43,32 @@ class DynamoDBRepo:
     self.dynamodb.delete_item({'id' : id})
     return {}
 
+
+  def update_user(self, id, update_val):
+    itemKey = {
+      'id' : {
+        'S' : id
+      }
+    }
+
+    updateExp = {}
+
+    for key in update_val.keys():
+      if type(update_val[key]) == str:
+        updateExp[key] = {
+          'Value' : {
+            'S' : update_val[key]
+          }
+        }
+
+      if type(update_val[key]) == int:
+        updateExp[key] = {
+          'Value' : {
+            'N' : str(update_val[key])
+          }
+        }
+
+    self.dynamodb.update_item(itemKey, updateExp)
+    return {}
 
 

@@ -1,5 +1,7 @@
 
+import sys
 import json
+import traceback
 from helpr.service_handler import ServiceHandler
 from helpr.http_exceptions import HTTPExceptions
 
@@ -94,7 +96,9 @@ class AWSServiceHandler:
     # Execute the service
     try:
       resp = self.service.execute()
-    except Exception:
+    except Exception as e:
+      exc_info = sys.exc_info()
+      traceback.print_exception(*exc_info)
       HTTPExceptions.raise_exception(
         HTTPExceptions.INTERNAL_SERVER_ERROR,
         self.path,
@@ -102,8 +106,4 @@ class AWSServiceHandler:
       )
 
     return resp
-
-
-
-
 
