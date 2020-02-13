@@ -1,10 +1,11 @@
 
 import sys
 import json
+import logging
 import traceback
+from helpr import http_exceptions
 from helpr.service_handler import ServiceHandler
 from helpr.http_exceptions import HTTPExceptions
-
 
 class AWSServiceHandler:
   """
@@ -53,7 +54,6 @@ class AWSServiceHandler:
     self.queryStringParams = event['queryStringParameters']
     self.eventBody = AWSServiceHandler.parse_json(event['body'])
 
-
     # Initialize Service Handler for the request
     self.service_handler = ServiceHandler(
       endpoint = self.path,
@@ -86,24 +86,47 @@ class AWSServiceHandler:
     :returns: request status and body
     :rtype: dictionary
     """
+
     # Raise Error Upon Validation
-    self.service_handler._validate_request_params(
-      qparams = self.queryStringParams,
-      reqbody = self.eventBody,
-      path_params = self.pathParams
-    )
+    try:
+      self.service_handler._validate_request_params(
+        qparams = self.queryStringParams,
+        reqbody = self.eventBody,
+        path_params = self.pathParams
+      )
+    except Exception as e:
+      logging.info(' ' + self.path + ' ' + self.httpMethod + ' - ' + str(e.args[0]))
+      return {
+        'statusCode' : e.args[0],
+        'body' : str(e.args)
+      }
 
     # Execute the service
     try:
       resp = self.service.execute()
+    except (http_exceptions.BadRequest, http_exceptions.InternalServerError, \
+      http_exceptions.MethodNotAllowed): 
+      logging.info(' ' + self.path + ' ' + self.httpMethod + ' - ' + str(e.args[0]))
+      return {
+        'statusCode' : e.args[0],
+        'body' : str(e.args)
+      }
     except Exception as e:
+      logging.info(' ' + self.path + ' ' + self.httpMethod + ' - 500 INTERNAL SERVER ERROR')
       exc_info = sys.exc_info()
       traceback.print_exception(*exc_info)
+
       HTTPExceptions.raise_exception(
         HTTPExceptions.INTERNAL_SERVER_ERROR,
         self.path,
         'Server Error'
       )
 
+    logging.info(' ' + self.path + ' ' + self.httpMethod + ' - ' + str(resp['statusCode']))
+
     return resp
+
+
+
+
 

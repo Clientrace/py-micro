@@ -28,7 +28,6 @@ class DynamoDBRepo:
 
     resp = self.dynamodb.get_item({'id' : id})
     user = resp['Item']
-    print(user)
     user['age'] = int(user['age'])
     return user
 

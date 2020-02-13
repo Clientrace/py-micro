@@ -34,11 +34,5 @@ def handler(event, context):
     }
   )
 
-  try:
-    return svh.execute()
-  except Exception as e:
-    return {
-      'statusCode' : e.args[0],
-      'body' : str(e.args)
-    }
+  return svh.execute()
 
