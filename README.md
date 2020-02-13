@@ -14,11 +14,16 @@ coverage report -m
 ```
 
 ## API Documentation
-Install apidoc for writing in line REST python documentation
+### Installation
+Install apidoc for writing in-line REST python documentation
 ```
 npm install apidoc -g
 ```
 
-
+### Generate Docu
+Generate REST API Documentation
+```
+apidoc -i endpoint/ -f ".*\\.py$" -o apidoc
+```
 
 

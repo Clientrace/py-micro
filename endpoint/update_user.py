@@ -6,8 +6,22 @@ from ms.services.update_user import UpdateUser
 from ms import dynamodb_repo
 
 def handler(event, context):
+  """
+  @api {put} /user/create/
+  @apiName Update User
+  @apiGroup User
 
-  # Initialize Request Handler for Request Validation
+  @apiDescription Update User Fields
+
+  @apiParam {String} name user's name
+  @apiParam {String} address user's address
+  @apiParam {Integer} age user's age
+
+  @apiSuccessExample Success-Response:
+  HTTP/1.1 200 OK
+  {}
+  """
+
   svh = AWSServiceHandler(
     event,
     Service = UpdateUser,
@@ -27,8 +41,4 @@ def handler(event, context):
       'statusCode' : e.args[0],
       'body' : str(e.args)
     }
-
-
-
-
 

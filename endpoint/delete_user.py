@@ -6,7 +6,17 @@ from ms.services.delete_user import DeleteUser
 from ms import dynamodb_repo
 
 def handler(event, context):
-  # Initialize Request Handler for Request Validation
+  """
+  @api {get} /user/delete/{id}
+  @apiName Delete
+  @apiGroup User
+
+  @apiDescription Delete User by ID
+
+  @apiSuccessExample Success-Response:
+  HTTP/1.1 200 OK
+  {}
+  """
   svh = AWSServiceHandler(
     event,
     Service = DeleteUser,

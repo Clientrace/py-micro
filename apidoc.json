@@ -1,0 +1,7 @@
+{
+  "name" : "User API",
+  "version" : "0.0.1",
+  "description" : "Simple Microservice for user CRUD",
+  "title" : "User API",
+  "url" : "host_url"
+}
