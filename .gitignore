@@ -19,3 +19,6 @@ var/
 
 # Serverless directories
 .serverless
+
+# Docs
+apidoc/
