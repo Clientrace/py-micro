@@ -1,9 +1,10 @@
 
 import uuid
 from wrappers.aws.dynamodb import Dynamodb
+from ms.repository import Repository
 
 
-class DynamoDBRepo:
+class DynamoDBRepo(Repository):
 
   def __init__(self, tableName, region, credentials=None):
     self.dynamodb = Dynamodb(tableName, region, credentials)
