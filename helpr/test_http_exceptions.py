@@ -4,11 +4,6 @@ import logging
 import unittest
 from helpr.http_exceptions import HTTPExceptions, BadRequest, InternalServerError, MethodNotAllowed
 
-logger = logging.getLogger()
-logger.level = logging.DEBUG
-stream_handler = logging.StreamHandler(sys.stdout)
-logger.addHandler(stream_handler)
-
 
 class HttpExceptionTest(unittest.TestCase):
 
@@ -65,7 +60,6 @@ class HttpExceptionTest(unittest.TestCase):
         '/testendpoint/internalservererror'
       )
 
-    logging.getLogger('show').info(context.exception)
 
     self.assertEqual(context.exception.code, HTTPExceptions.INTERNAL_SERVER_ERROR)
     self.assertEqual(context.exception.msg, 'Internal Server Error')
@@ -78,7 +72,6 @@ class HttpExceptionTest(unittest.TestCase):
         '/testendpoint/methodnotallowed'
       )
 
-    logging.getLogger('show').info(context.exception)
 
     self.assertEqual(context.exception.code, HTTPExceptions.METHOD_NOT_ALLOWED)
     self.assertEqual(context.exception.msg, 'Method not Allowed')
